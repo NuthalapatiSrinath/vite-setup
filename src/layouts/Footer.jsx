@@ -1,61 +1,116 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Heart, Gem } from "lucide-react";
+// Ensure you have a logo.png in your 'public' folder
+const LOGO_PATH = "/logo.png";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="w-full bg-slate-900 text-slate-400 py-4 px-4 mt-auto shadow-2xl relative z-10 text-xs border-t border-slate-800">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
-        {/* Left: Copyright & Brand */}
-        <div className="text-center md:text-left flex items-center gap-2">
-          <Gem className="w-4 h-4 text-amber-500" />
-          <p className="tracking-wide">
-            &copy; {currentYear}{" "}
-            <span className="text-white font-bold tracking-wider hover:text-amber-500 transition-colors cursor-default">
-              Luxe Gold & Jewelry
-            </span>
-            <span className="mx-2 text-slate-600">|</span>
-            <span className="uppercase tracking-widest opacity-80">
-              Admin Portal
-            </span>
-          </p>
+    <footer className="w-full bg-[#1c1b19] relative z-10 mt-auto block font-sans">
+      {/* White strip above footer */}
+      <div className="h-5 w-full bg-white" />
+
+      {/* Main Footer Container */}
+      <div className="relative mx-auto px-5 pt-14 pb-12 text-center text-white md:px-10 lg:pt-14 lg:pb-12">
+        {/* Logo Circle - Overlapping Top */}
+        <div className="absolute left-1/2 -translate-x-1/2 -top-7 flex h-[72px] w-[72px] items-center justify-center rounded-full bg-[#f5ebf5] shadow-md z-10">
+          <img
+            src={LOGO_PATH}
+            alt="Logo"
+            className="h-[60px] w-[60px] object-contain"
+            onError={(e) => {
+              e.target.style.display = "none";
+              e.target.parentElement.innerHTML =
+                '<span class="text-2xl">💎</span>';
+            }}
+          />
         </div>
 
-        {/* Right: Links & Credits */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-          {/* Policy Links */}
-          <div className="flex gap-4">
-            <Link
-              to="/privacy-policy"
-              className="hover:text-white hover:underline decoration-amber-500 decoration-2 underline-offset-2 transition-all"
-            >
-              Privacy
-            </Link>
-            <Link
-              to="/terms-of-service"
-              className="hover:text-white hover:underline decoration-amber-500 decoration-2 underline-offset-2 transition-all"
-            >
-              Terms
-            </Link>
+        {/* Brand Title */}
+        <h2 className="mt-4 text-[23px] font-normal tracking-[2px] text-white">
+          ARRA JEWELS
+        </h2>
+
+        {/* Top Divider */}
+        <div className="my-7 h-px w-full bg-white/10" />
+
+        {/* Columns Container */}
+        {/* Mobile: Grid (2 cols), Tablet: Grid (3 cols), Desktop: Flex (Space Between) */}
+        <div className="grid grid-cols-2 gap-x-4 gap-y-8 text-left md:grid-cols-3 lg:flex lg:justify-between lg:gap-10 lg:px-10">
+          {/* Column 1 */}
+          <div className="flex flex-col">
+            <h4 className="mb-3.5 text-xl font-normal text-white">About</h4>
+            <FooterLink>Who we are</FooterLink>
+            <FooterLink>Our mission</FooterLink>
+            <FooterLink>Review</FooterLink>
+            <FooterLink>Press</FooterLink>
           </div>
 
-          {/* Version & Credit */}
-          <div className="flex items-center gap-2 pl-0 sm:pl-6 sm:border-l border-slate-700">
-            <span className="font-mono bg-slate-800 px-1.5 py-0.5 rounded text-[10px]">
-              v2.1.0
-            </span>
-            <span className="flex items-center gap-1">
-              Made with
-              <Heart className="w-3 h-3 text-red-500 fill-red-500 animate-pulse" />
-              by <span className="font-semibold text-slate-300">TechTeam</span>
-            </span>
+          {/* Column 2 */}
+          <div className="flex flex-col lg:mr-9">
+            <h4 className="mb-3.5 text-xl font-normal text-white">Learn</h4>
+            <FooterLink>4C’s of diamond</FooterLink>
+            <FooterLink>Crown Diamond Guide</FooterLink>
+            <FooterLink>Grown Gemstone Guide</FooterLink>
+            <FooterLink>Find your ring size</FooterLink>
+            <FooterLink>Guide</FooterLink>
           </div>
+
+          {/* Column 3 */}
+          <div className="flex flex-col">
+            <h4 className="mb-3.5 text-xl font-normal text-white">Care</h4>
+            <FooterLink>Returns</FooterLink>
+            <FooterLink>Shipping</FooterLink>
+            <FooterLink>Lifetime guarantee</FooterLink>
+            <FooterLink>Ring resizing</FooterLink>
+            <FooterLink>FAQ’s</FooterLink>
+            <FooterLink>Accessibility</FooterLink>
+          </div>
+
+          {/* Column 4 */}
+          <div className="flex flex-col">
+            <h4 className="mb-3.5 text-xl font-normal text-white">Category</h4>
+            <FooterLink>Engagement Rings</FooterLink>
+            <FooterLink>Wedding Rings</FooterLink>
+            <FooterLink>Earrings</FooterLink>
+            <FooterLink>Bracelet</FooterLink>
+            <FooterLink>Pendants</FooterLink>
+          </div>
+
+          {/* Column 5 */}
+          <div className="flex flex-col">
+            <h4 className="mb-3.5 text-xl font-normal text-white">Connect</h4>
+            <FooterLink>Live chat</FooterLink>
+            <FooterLink>contact@arra.com</FooterLink>
+            <FooterLink>+1-224-806-6786</FooterLink>
+            <FooterLink>Shop place</FooterLink>
+          </div>
+
+          {/* Column 6 */}
+          <div className="flex flex-col">
+            <h4 className="mb-3.5 text-xl font-normal text-white">Socials</h4>
+            <FooterLink>Instagram</FooterLink>
+            <FooterLink>Facebook</FooterLink>
+            <FooterLink>Twitter</FooterLink>
+            <FooterLink>Whatsapp</FooterLink>
+          </div>
+        </div>
+
+        {/* Bottom Divider */}
+        <div className="mt-8 mb-4 h-px w-full bg-white/10" />
+
+        {/* Copyright */}
+        <div className="text-center text-[13px] text-white/60">
+          Copy Rights 2025@ All Rights Reserved
         </div>
       </div>
     </footer>
   );
 };
+
+// Helper component for links to keep code clean
+const FooterLink = ({ children }) => (
+  <p className="my-1.5 text-[17px] text-white/70 transition-colors hover:text-[#ae6eae] cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis">
+    {children}
+  </p>
+);
 
 export default Footer;

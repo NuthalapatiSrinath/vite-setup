@@ -5,40 +5,107 @@ import { useSelector } from "react-redux";
 // Layouts
 import Layout from "../layouts/Layout";
 
-// Pages (We will create these next, placeholders for now)
+// Pages
 import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
-// import Staff from "../pages/Staff";
-// import Locations from "../pages/Locations";
-// import Settings from "../pages/Settings";
 import NotFound from "../pages/NotFound";
 
-// --- PROTECTED ROUTE COMPONENT ---
-// This checks Redux state. If not logged in, redirects to /login
+// Placeholder for missing pages (Prevents crashes)
+const Placeholder = ({ title }) => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold text-slate-800">{title}</h2>
+    <p className="text-slate-500 mt-2">This module is under development.</p>
+  </div>
+);
+
+// --- 1. DEFINE ROUTES & TITLES HERE ---
+export const appRoutes = [
+  // Overview
+  { path: "/", element: <Dashboard />, title: "Dashboard Overview" },
+
+  // Inventory
+  {
+    path: "/inventory/products",
+    element: <Placeholder title="Product Catalog" />,
+    title: "Product Catalog",
+  },
+  {
+    path: "/inventory/categories",
+    element: <Placeholder title="Categories" />,
+    title: "Category Management",
+  },
+  {
+    path: "/inventory/stock",
+    element: <Placeholder title="Stock Adjustment" />,
+    title: "Stock Management",
+  },
+
+  // Business Logic
+  {
+    path: "/gold-rates",
+    element: <Placeholder title="Gold Rates" />,
+    title: "Daily Gold Rates",
+  },
+  {
+    path: "/suppliers",
+    element: <Placeholder title="Suppliers" />,
+    title: "Supplier Directory",
+  },
+
+  // Sales
+  {
+    path: "/orders/new",
+    element: <Placeholder title="New Order" />,
+    title: "Create New Order",
+  },
+  {
+    path: "/customers",
+    element: <Placeholder title="Customers" />,
+    title: "Customer Database",
+  },
+
+  // Management
+  {
+    path: "/finance/transactions",
+    element: <Placeholder title="Transactions" />,
+    title: "Financial Transactions",
+  },
+  {
+    path: "/staff",
+    element: <Placeholder title="Staff" />,
+    title: "Staff & Karigars",
+  },
+  {
+    path: "/reports",
+    element: <Placeholder title="Reports" />,
+    title: "Business Reports",
+  },
+
+  // System
+  {
+    path: "/settings",
+    element: <Placeholder title="Settings" />,
+    title: "System Settings",
+  },
+];
+
+// --- 2. ROUTE COMPONENTS ---
+
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
   return children;
 };
 
-// --- PUBLIC ROUTE COMPONENT ---
-// If already logged in, prevent access to Login page and redirect to Dashboard
 const PublicRoute = ({ children }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
-
-  if (isAuthenticated) {
-    return <Navigate to="/" replace />;
-  }
+  if (isAuthenticated) return <Navigate to="/" replace />;
   return children;
 };
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* --- Public Routes --- */}
       <Route
         path="/login"
         element={
@@ -48,7 +115,6 @@ const AppRoutes = () => {
         }
       />
 
-      {/* --- Protected Admin Routes --- */}
       <Route
         path="/"
         element={
@@ -57,13 +123,12 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<Dashboard />} />
-        {/* <Route path="staff" element={<Staff />} />
-        <Route path="locations" element={<Locations />} />
-        <Route path="settings" element={<Settings />} /> */}
+        {/* Generates routes automatically from the list above */}
+        {appRoutes.map((route, index) => (
+          <Route key={index} path={route.path} element={route.element} />
+        ))}
       </Route>
 
-      {/* --- Catch All (404) --- */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

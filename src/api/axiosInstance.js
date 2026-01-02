@@ -1,18 +1,17 @@
 import axios from "axios";
 
-// Create a centralized axios instance
+// Create axios instance pointing to your backend
 const api = axios.create({
-  // Replace this with your actual Backend URL later
-  baseURL: "http://localhost:5000/api",
+  baseURL: "http://localhost:5000/api", // Make sure your backend runs on this port
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Interceptor: Automatically add Token to every request
+// Request Interceptor: Attach Token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token"); // We will store 'admin_token' here
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -21,13 +20,14 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Interceptor: Handle 401 (Unauthorized) errors globally
+// Response Interceptor: Handle 401 (Token Expired)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // If server says "Unauthorized", log the user out locally
+      // If token is invalid/expired, logout user
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       window.location.href = "/login";
     }
     return Promise.reject(error);

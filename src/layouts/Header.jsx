@@ -2,23 +2,18 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, Moon, Sun, LogOut, Gem } from "lucide-react";
 import toast from "react-hot-toast";
+import { appRoutes } from "../routes/AppRoutes"; // Importing the route list
 
 const Header = ({ onMenuClick, theme, toggleTheme }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // --- Route Mapping (Based on your AppRoutes.jsx) ---
-  // We define the titles here to match the paths in your router
-  const routeConfig = {
-    "/": "Dashboard Overview",
-    "/staff": "Staff Management",
-    "/locations": "Location Manager",
-    "/settings": "System Settings",
-    "/login": "Login",
-  };
+  // Find the current route configuration to get the title
+  const currentRoute = appRoutes.find(
+    (route) => route.path === location.pathname
+  );
 
-  // Get current title or default to 'Dashboard'
-  const pageTitle = routeConfig[location.pathname] || "Dashboard";
+  const pageTitle = currentRoute ? currentRoute.title : "Dashboard";
 
   // --- User Data Logic ---
   const userString = localStorage.getItem("user");
@@ -30,9 +25,8 @@ const Header = ({ onMenuClick, theme, toggleTheme }) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    localStorage.removeItem("isAuthenticated");
-    toast.success("Logged out successfully");
-    navigate("/login", { replace: true });
+    // Reload/Redirect to login
+    window.location.href = "/login";
   };
 
   return (
